@@ -8,7 +8,7 @@ class App extends Component {
     this.state={
       name : '',
       Description:'',
-      image:null
+      image:''
     }
   }
 
@@ -38,8 +38,9 @@ class App extends Component {
     const fd = new FormData();
     fd.append('fullName', this.state.name);
     fd.append('description', this.state.Description );
-    fd.append('image', this.state.image);    
-    axios.post('/image',fd, {
+    fd.append('image', this.state.image); 
+       
+    axios.post('/',fd, {
       onUploadProgress : progressEvent =>{
         console.log('Upload Progress' +Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
       }
@@ -64,7 +65,7 @@ class App extends Component {
           <input
             style={{display:'none'}}
             type='file' 
-            value = {this.image} 
+            value = {this.state.image} 
             onChange={this.fileChange} 
             ref={fileInput=>this.fileInput=fileInput}/>
           <button onClick={()=>this.fileInput.click()}>Pick file</button>

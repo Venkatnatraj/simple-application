@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const multer = require('multer'); 
-// const User = require('./model/user')
+const User = require('./model/user')
 const path = require('path');
 const bodyParser = require("body-parser");
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({extended : true}));
 
@@ -13,7 +13,7 @@ app.use('/uploads',express.static('uploads'));
 app.get('/',(req,res)=>{
     res.send('home')
 })
-app.use('/public/uploads', express.static(path.join(__dirname, 'public/uploads')));
+app.use('./public/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 app.use((req,res,next)=>{
     //* will give access to any origin
@@ -21,9 +21,9 @@ app.use((req,res,next)=>{
  next();
 });
 
-// setting storage
+// //setting storage
 const storage = multer.diskStorage({
-    destination: '/public/uploads/',
+    destination: './public/uploads/',
      filename: function(req, file, callback) {
       req.newFileName = new  Date().toISOString() + file.originalname;
       callback(null, req.newFileName);
@@ -37,7 +37,7 @@ const storage = multer.diskStorage({
       callback(null, false);
     }
   };
-  // stores in uploads folder
+//   stores in uploads folder
   const upload = multer({
     storage: storage,
     limits: {
@@ -45,7 +45,7 @@ const storage = multer.diskStorage({
     },
     fileFilter: fileFilter
   });
-app.post('/image',upload.single('image'),(req,res)=>{
+app.post('/',(req,res)=>{
     const user = new User ({
         _id : new mongoose.Types.ObjectId(),
         name : req.body.name,
